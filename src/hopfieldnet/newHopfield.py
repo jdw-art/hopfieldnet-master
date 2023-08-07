@@ -1,5 +1,7 @@
 import numpy as np
 from random import randint, shuffle
+from matplotlib import pyplot as plt
+import matplotlib.cm as cm
 
 
 class LIFNeuron:
@@ -100,3 +102,13 @@ class HopfieldNetwork(object):
         energy = -0.5 * np.sum(s_matrix * self._weights) + np.sum(s * self.threshold)
         return energy
         # return -0.5 * s @ self._weights @ s + np.sum(s * self.threshold)
+
+    def plot_weights(self):
+        plt.figure(figsize=(6, 5))
+        w_mat = plt.imshow(self._weights, cmap=cm.coolwarm)
+        plt.colorbar(w_mat)
+        plt.title("Network Weights")
+        plt.tight_layout()
+        plt.savefig("weights.png")
+        plt.show()
+

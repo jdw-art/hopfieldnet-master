@@ -144,8 +144,9 @@ noisy_sets = [salt_pepper_noise(data, 0.3) for data in noisy_sets]
 # noisy_sets = [np.where(data == 0, -1, data) for data in noisy_sets]
 noisy_sets = np.array(noisy_sets)
 
-network = HopfieldNetwork(784, threshold=10)
+# network = HopfieldNetwork(784, threshold=50)
 # hebbian_training(network, original_sets)
+network = HopfieldNetwork(784, threshold=50)
 stdp_training(network, original_sets)
 
 testing_predicted = [network.run(data, max_iterations=1000) for data in testing_sets]
@@ -154,4 +155,5 @@ noisy_predicted = [network.run(data, max_iterations=1000) for data in noisy_sets
 plot1(original_sets, testing_sets, tag1='Original', tag2='Testing')
 plot1(original_sets, noisy_sets, tag1='Original', tag2='Noisy')
 plot1(testing_predicted, noisy_predicted, tag1='TestingPredicted', tag2='NoisyPredicted')
+# network.plot_weights()
 

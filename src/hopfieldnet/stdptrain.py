@@ -31,20 +31,22 @@ def stdp_update(pre_neuron, post_neuron, pattern):
 
     for t in range(len(pattern)):
         if pattern[pre_neuron] == 1 and pattern[post_neuron] == -1:  # Pre-synaptic spike, post-synaptic no spike
-            # dt = t - np.where(pattern[:t][::-1] == -1)[0][0]  # Calculate the time difference to the last post-synaptic spike
+            # Calculate the time difference to the last post-synaptic spike
+            # dt = t - np.where(pattern[:t][::-1] == -1)[0][0]
             # dw += A_pos * np.exp(-dt / tau_pos)
             last_post_spike = np.where(pattern[:t][::-1] == -1)[0]
             if len(last_post_spike) > 0:
                 dt = t - last_post_spike[0]
-                dw += A_pos * np.exp(-dt / tau_neg)
+                dw += A_pos * np.exp(-dt / tau_pos)
 
         if pattern[pre_neuron] == -1 and pattern[post_neuron] == 1:  # Pre-synaptic no spike, post-synaptic spike
-            # dt = t - np.where(pattern[:t][::-1] == 1)[0][0]  # Calculate the time difference to the last pre-synaptic spike
+            # Calculate the time difference to the last pre-synaptic spike
+            # dt = t - np.where(pattern[:t][::-1] == 1)[0][0]
             # dw += A_neg * np.exp(-dt / tau_neg)
             last_post_spike = np.where(pattern[:t][::-1] == 1)[0]
             if len(last_post_spike) > 0:
                 dt = t - last_post_spike[0]
-                dw += A_pos * np.exp(-dt / tau_neg)
+                dw += A_neg * np.exp(-dt / tau_neg)
 
     return dw
 
