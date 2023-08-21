@@ -7,7 +7,7 @@ import matplotlib.cm as cm
 class LIFNeuron:
     def __init__(self, num_inputs):
         self.num_inputs = num_inputs
-        self.threshold = 0.0
+        self.threshold = 0.7
         self.potential = 0.0
         self.fired = False
         self.degradation = 0.9
@@ -38,7 +38,7 @@ class HopfieldNetwork(object):
         self._num_inputs = num_inputs
         self.threshold = threshold
         self.neurons = [LIFNeuron(num_inputs) for _ in range(num_inputs)]
-        self._weights = np.random.uniform(-1.0, 1.0, (num_inputs, num_inputs))
+        self._weights = np.random.uniform(0.0, 1.0, (num_inputs, num_inputs))
 
     def set_weights(self, weights):
         """Update the weights array"""
@@ -59,23 +59,37 @@ class HopfieldNetwork(object):
         neuron_output = self.neurons[neuron].fire(total_potential)
         return neuron_output
 
+    # def run_once(self, update_list, input_pattern):
+    #     """Iterate over every neuron and update it's output"""
+    #     result = input_pattern.copy()
+    #     e = self.energy(result)
+    #
+    #     changed = False
+    #     for neuron in update_list:
+    #         neuron_output = self.calculate_neuron_output(neuron, result)
+    #         new_energy = self.energy(neuron_output)
+    #
+    #         if e == new_energy:
+    #             changed = False
+    #         else:
+    #             result[neuron] = neuron_output
+    #             changed = True
+    #
+    #         e = new_energy
+    #
+    #     return changed, result
+
     def run_once(self, update_list, input_pattern):
         """Iterate over every neuron and update it's output"""
         result = input_pattern.copy()
-        e = self.energy(result)
 
         changed = False
         for neuron in update_list:
             neuron_output = self.calculate_neuron_output(neuron, result)
-            new_energy = self.energy(neuron_output)
 
-            if e == new_energy:
-                changed = False
-            else:
+            if neuron_output != result[neuron]:
                 result[neuron] = neuron_output
                 changed = True
-                
-            e = new_energy
 
         return changed, result
 

@@ -24,8 +24,8 @@ def stdp_update(pre_neuron, post_neuron, pattern):
     """Calculate the STDP update for a specific pre-synaptic and post-synaptic neuron"""
     tau_pos = 20  # Time constant for potentiation
     tau_neg = 20  # Time constant for depression
-    A_pos = 0.1  # Learning rate for potentiation
-    A_neg = -0.1  # Learning rate for depression
+    A_pos = 0.01  # Learning rate for potentiation
+    A_neg = -0.01  # Learning rate for depression
 
     dw = 0.0
 

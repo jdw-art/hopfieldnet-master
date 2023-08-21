@@ -21,10 +21,10 @@ transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize((0.1307,), (0.3081,))
 ])
-train_dataset = datasets.MNIST(root='E:\Dataset\MNIST', train=True, download=True, transform=transform)
+train_dataset = datasets.MNIST(root=r'/Users/jacob/Datasets/MNIST', train=True, download=False, transform=transform)
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=1, shuffle=False)
 
-test_dataset = datasets.MNIST(root='E:\Dataset\MNIST', train=False, download=True, transform=transform)
+test_dataset = datasets.MNIST(root=r'/Users/jacob/Datasets/MNIST', train=False, download=False, transform=transform)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False)
 
 def salt_pepper_noise(image, ratio):
@@ -132,16 +132,16 @@ for i in range(3):
     test_sets1.append(np.array(random_image).reshape(784))
 
 original_sets =[binarize_array(data) for data in test_sets]
-# original_sets = [np.where(data == 0, -1, data) for data in original_sets]
+original_sets = [np.where(data == 0, -1, data) for data in original_sets]
 original_sets = np.array(original_sets)
 
 testing_sets = [binarize_array(data) for data in test_sets1]
-# testing_sets = [np.where(data == 0, -1, data) for data in testing_sets]
+testing_sets = [np.where(data == 0, -1, data) for data in testing_sets]
 testing_sets = np.array(testing_sets)
 
 noisy_sets = [binarize_array(data) for data in test_sets]
 noisy_sets = [salt_pepper_noise(data, 0.3) for data in noisy_sets]
-# noisy_sets = [np.where(data == 0, -1, data) for data in noisy_sets]
+noisy_sets = [np.where(data == 0, -1, data) for data in noisy_sets]
 noisy_sets = np.array(noisy_sets)
 
 # network = HopfieldNetwork(784, threshold=50)
@@ -155,5 +155,5 @@ noisy_predicted = [network.run(data, max_iterations=1000) for data in noisy_sets
 plot1(original_sets, testing_sets, tag1='Original', tag2='Testing')
 plot1(original_sets, noisy_sets, tag1='Original', tag2='Noisy')
 plot1(testing_predicted, noisy_predicted, tag1='TestingPredicted', tag2='NoisyPredicted')
-# network.plot_weights()
+network.plot_weights()
 
