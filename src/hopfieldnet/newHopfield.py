@@ -7,9 +7,9 @@ import matplotlib.cm as cm
 class LIFNeuron:
     def __init__(self, num_inputs):
         self.num_inputs = num_inputs
-        self.threshold = 0.7
+        self.threshold = 0.5
         self.potential = 0.0
-        self.fired = False
+        self.fired = 0
         self.degradation = 0.9
 
     def calculate_potential(self, inputs, weight):
@@ -125,4 +125,5 @@ class HopfieldNetwork(object):
         plt.tight_layout()
         plt.savefig("weights.png")
         plt.show()
+        print(np.mean(self._weights))
 

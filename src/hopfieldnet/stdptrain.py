@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm import tqdm
 
 
 def stdp_update_weights(neuron_index, input_patterns, network):
@@ -26,6 +27,7 @@ def stdp_update(pre_neuron, post_neuron, pattern):
     tau_neg = 20  # Time constant for depression
     A_pos = 0.1  # Learning rate for potentiation
     A_neg = -0.1  # Learning rate for depression
+    # A_neg = 0.1 # symmetric STDP learning rule
 
     dw = 0.0
 
@@ -57,7 +59,10 @@ def stdp_training(network, input_patterns):
 
     weights = np.zeros((num_neurons, num_neurons))
 
-    for i in range(num_neurons):
+    for i in tqdm(range(num_neurons)):
         weights[i] = stdp_update_weights(i, input_patterns, network)
 
-    network.set_weights(weights)
+    symmetric_weights = (weights + weights.T) / 2
+    network.set_weights(symmetric_weights)
+
+    # network.set_weights(weights)

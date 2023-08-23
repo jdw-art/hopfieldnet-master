@@ -1,7 +1,10 @@
 from random import randint
 
 import numpy as np
+import torch
+import random
 from matplotlib import pyplot as plt
+from torchvision import transforms, datasets
 
 # from hopfieldnet.net import HopfieldNetwork
 # from hopfieldnet.trainers import hebbian_training
@@ -9,22 +12,19 @@ from hopfieldnet.newHopfield import HopfieldNetwork
 # from hopfieldnet.stdpnet import HopfieldNetwork
 from hopfieldnet.stdptrain import stdp_training
 
-import torch
-import random
-from torchvision import transforms, datasets
-
 import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+plt.switch_backend('TkAgg')
 
 # 加载MNIST数据集
 transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize((0.1307,), (0.3081,))
 ])
-train_dataset = datasets.MNIST(root=r'/Users/jacob/Datasets/MNIST', train=True, download=False, transform=transform)
+train_dataset = datasets.MNIST(root='/usr/common/datasets/MNIST', train=True, download=True, transform=transform)
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=1, shuffle=False)
 
-test_dataset = datasets.MNIST(root=r'/Users/jacob/Datasets/MNIST', train=False, download=False, transform=transform)
+test_dataset = datasets.MNIST(root='/usr/common/datasets/MNIST', train=False, download=True, transform=transform)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False)
 
 def salt_pepper_noise(image, ratio):
@@ -47,6 +47,7 @@ def salt_pepper_noise(image, ratio):
 
     return output.reshape(784)
 
+
 def binarize_array(input_array):
     # 计算数组中的最小值和最大值
     min_value = np.min(input_array)
@@ -57,10 +58,12 @@ def binarize_array(input_array):
 
     return binary_array
 
+
 def reshape(data):
     dim = int(np.sqrt(len(data)))
     data = np.reshape(data, (dim, dim))
     return data
+
 
 def plot(feature, predicted, tag1, tag2):
     feature = [reshape(data) for data in feature]
@@ -93,6 +96,7 @@ def plot(feature, predicted, tag1, tag2):
     plt.tight_layout()
     plt.show()
 
+
 def plot1(feature, predicted, tag1, tag2):
     feature = [reshape(data) for data in feature]
     predicted = [reshape(data) for data in predicted]
@@ -113,6 +117,7 @@ def plot1(feature, predicted, tag1, tag2):
     plt.tight_layout()
     plt.show()
 
+
 test_sets = []
 test_sets1 = []
 # 存储每个类别对应的图像
@@ -131,7 +136,7 @@ for i in range(3):
     random_image = random.choice(images_per_class[i])
     test_sets1.append(np.array(random_image).reshape(784))
 
-original_sets =[binarize_array(data) for data in test_sets]
+original_sets = [binarize_array(data) for data in test_sets]
 original_sets = [np.where(data == 0, -1, data) for data in original_sets]
 original_sets = np.array(original_sets)
 
@@ -146,7 +151,7 @@ noisy_sets = np.array(noisy_sets)
 
 # network = HopfieldNetwork(784, threshold=50)
 # hebbian_training(network, original_sets)
-network = HopfieldNetwork(784, threshold=50)
+network = HopfieldNetwork(784)
 stdp_training(network, original_sets)
 
 testing_predicted = [network.run(data, max_iterations=1000) for data in testing_sets]

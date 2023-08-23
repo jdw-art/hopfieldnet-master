@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" serverName="jww@10.12.41.197:6006 password" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
       <paths name="jww@10.12.41.197:6006 password">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/jww/projects/HopfieldNet" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

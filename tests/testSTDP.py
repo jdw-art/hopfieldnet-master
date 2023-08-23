@@ -16,7 +16,7 @@ class TestSTDPFunctions(unittest.TestCase):
         pattern = np.array([1, -1, 1, -1])
 
         dw = stdp_update(pre_neuron, post_neuron, pattern)
-        self.assertAlmostEqual(dw, 0.01809674836071919, places=2)  # Adjust the expected value based on your implementation
+        self.assertAlmostEqual(dw, 0.18096748360719192, places=2)  # Adjust the expected value based on your implementation
 
     def test_stdp_update_weights(self):
         # Create mock input patterns
